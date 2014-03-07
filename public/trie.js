@@ -34,18 +34,27 @@ Trie.prototype.getWords = function(words, currentWord){
   // contained in this Trie.
   // it will use currentWord as a prefix,
   // since a Trie doesn't know about its parents.
-  var words = [], currentWord = currentWord || "";
-  _.each(this.characters, function(char){
+  words = words || [];
+  currentWord = currentWord || "";
+  // _.each(this.characters, function(char){
+  // this.characters.forEach(function(char){
+  for (var char in this.characters) {
+    // console.log("at line 43 char is " + char);
     currentWord += char;
-    if (char.isWord) {
+    if (this.characters[char].isWord) {
       words.push(currentWord);
     }
-    if (char.characters) {
-      char.getWords(words, currentWord);
+    // console.log("char.characters = "+char.characters);
+    // console.log("this = " + this);
+    // console.log("char = " + char);
+    if (this.characters[char].characters) {
+      this.characters[char].getWords(words, currentWord);
     } else {
       currentWord = "";
     }
-  })
+  // });
+  };
+  return words;
 };
 
 Trie.prototype.find = function(word, index){
