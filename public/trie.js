@@ -2,11 +2,22 @@ Trie = function(){
   this.characters = {};
 };
 
-Trie.prototype.learn = function(word, index){
+Trie.prototype.learn = function(word, i){
   // This function should add the given word,
   // starting from the given index,
   // to this Trie.
-
+  i = i || 0;
+  var char = word[i];
+  if (this.characters[char]) {
+    this.characters[char].learn(word, i+1);
+  } else {
+    if (i === word.length) {
+      this.isWord = true;
+    } else {
+      this.characters[char] = new Trie();
+      this.characters[char].learn(word, i+1);
+    }
+  }
   // It will be recursive.  It will tell
   // the correct child of this Trie to learn the word
   // starting from a later index.
@@ -23,6 +34,18 @@ Trie.prototype.getWords = function(words, currentWord){
   // contained in this Trie.
   // it will use currentWord as a prefix,
   // since a Trie doesn't know about its parents.
+  var words = [], currentWord = currentWord || "";
+  _.each(this.characters, function(char){
+    currentWord += char;
+    if (char.isWord) {
+      words.push(currentWord);
+    }
+    if (char.characters) {
+      char.getWords(words, currentWord);
+    } else {
+      currentWord = "";
+    }
+  })
 };
 
 Trie.prototype.find = function(word, index){
