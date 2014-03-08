@@ -8,13 +8,19 @@ Trie.prototype.learn = function(word, i){
   // to this Trie.
   i = i || 0;
   var char = word[i];
+  // if the next letter is already known, start over from there
   if (this.characters[char]) {
     this.characters[char].learn(word, i+1);
   } else {
+    // if the next letter is not known, either...
+    // ...it's the end of the word...
     if (i === word.length) {
+        // ... and we just set isWord and stop recursion...
       this.isWord = true;
     } else {
+    // ... or it's jut not created, so we create it...
       this.characters[char] = new Trie();
+      // ... and start over from there
       this.characters[char].learn(word, i+1);
     }
   }
@@ -36,30 +42,42 @@ Trie.prototype.getWords = function(words, currentWord){
   // since a Trie doesn't know about its parents.
   words = words || [];
   currentWord = currentWord || "";
-  // _.each(this.characters, function(char){
-  // this.characters.forEach(function(char){
+
+  console.log("currentWord= " + currentWord);
+
   for (var char in this.characters) {
-    // console.log("at line 43 char is " + char);
-    currentWord += char;
+    var newWord = currentWord + char;
     if (this.characters[char].isWord) {
-      words.push(currentWord);
+      words.push(newWord);
     }
-    // console.log("char.characters = "+char.characters);
-    // console.log("this = " + this);
-    // console.log("char = " + char);
     if (this.characters[char].characters) {
-      this.characters[char].getWords(words, currentWord);
-    } else {
-      currentWord = "";
-    }
-  // });
-  };
+      this.characters[char].getWords(words, newWord);
+    } else {}
+  }
   return words;
 };
+
+var tree = new Trie();
+tree.learn("hi");
+tree.learn("he");
+tree.learn("hello");
+tree.learn("awesome");
+tree.learn("test");
+tree.learn("beast");
+tree.learn("skywalker");
 
 Trie.prototype.find = function(word, index){
   // This function will return the node in the trie
   // which corresponds to the end of the passed in word.
+  word = word || "";
+  index = index || 0;
+  var char = word[index];
+
+  if (this.characters[char]) {
+  return this.characters[char].find(word,index+1);
+  } else if (index === word.length) {
+    return this;
+  } else { return false; }
 
   // Be sure to consider what happens if the word is not in this Trie.
 };
