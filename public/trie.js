@@ -35,24 +35,21 @@ Trie.prototype.learn = function(word, i){
   // so that the words can be reconstructed later.
 };
 
-Trie.prototype.getWords = function(words, currentWord){
+Trie.prototype.getWords = function(words, currentWord) {
   // This function will return all the words which are
   // contained in this Trie.
   // it will use currentWord as a prefix,
   // since a Trie doesn't know about its parents.
   words = words || [];
   currentWord = currentWord || "";
-
-  console.log("currentWord= " + currentWord);
-
+  if (this.isWord) {
+    words.push(currentWord);
+  }
   for (var char in this.characters) {
     var newWord = currentWord + char;
-    if (this.characters[char].isWord) {
-      words.push(newWord);
-    }
     if (this.characters[char].characters) {
       this.characters[char].getWords(words, newWord);
-    } else {}
+    }
   }
   return words;
 };
