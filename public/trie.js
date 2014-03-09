@@ -47,9 +47,9 @@ Trie.prototype.getWords = function(words, currentWord) {
   }
   for (var char in this.characters) {
     var newWord = currentWord + char;
-    if (this.characters[char].characters) {
+    // if (this.characters[char].characters) {
       this.characters[char].getWords(words, newWord);
-    }
+    // }
   }
   return words;
 };
@@ -59,14 +59,14 @@ tree.learn("hi");
 tree.learn("he");
 tree.learn("hello");
 tree.learn("awesome");
-tree.learn("test");
-tree.learn("beast");
+tree.learn("falcon");
+tree.learn("rancor");
 tree.learn("skywalker");
 
 Trie.prototype.find = function(word, index){
   // This function will return the node in the trie
   // which corresponds to the end of the passed in word.
-  word = word || "";
+  
   index = index || 0;
   var char = word[index];
 
@@ -83,4 +83,13 @@ Trie.prototype.autoComplete = function(prefix){
   // This function will return all completions 
   // for a given prefix.
   // It should use find and getWords.
+  prefix = prefix.toLowerCase();
+  var node = this.find(prefix);
+  if (!node) {return [];}
+  var tester = node.getWords([],prefix);
+  console.log(node);
+  console.log(tester);
+  return node.getWords([],prefix);
 };
+
+
