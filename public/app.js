@@ -38,15 +38,21 @@ App.Views.Search = Backbone.View.extend({
 
   id: "search",
 
-  template: function(){ return "<form><input type='text' id='search_bar'>Type in search here</input></form>"},
+  template: function(){ return "<input type='text' id='search_bar'>Search</input><button id='clear'>Clear</button>"},
 
   events: {
-    'keyup #search_bar': 'search'
+    'keyup #search_bar': 'search',
+    'click #clear': 'clear'
   },
 
   render: function(){
     $(this.el).html(this.template());
     return this;
+  },
+
+  clear: function(){
+    $("#search_bar").val("");
+    $("#results").html("");
   },
 
   search: function(){
