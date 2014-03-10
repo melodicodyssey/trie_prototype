@@ -38,7 +38,7 @@ App.Views.Search = Backbone.View.extend({
 
   id: "search",
 
-  template: function(){ return "<input type='text' id='search_bar'>Search</input><button id='clear'>Clear</button>"},
+  template: function(){ return "<input type='text' id='search_bar'></input></br><button id='clear'>Clear</button>"},
 
   events: {
     'keyup #search_bar': 'search',
@@ -59,9 +59,13 @@ App.Views.Search = Backbone.View.extend({
     var word = $("#search_bar").val();
     App.autocompleter.complete(word);
     var result = App.autocompleter.complete(word);
-    var div = "<div>";
-    $.each(result, function(index, item) {
+
+    // $.each(result, function(index, item) {
     //   $("#results").append(new App.Views.Results({model: item}));
+    // })
+
+    var div = "<div id='result'>";
+    $.each(result, function(index, item) {
     div+=("<li><a href=\"http://en.wikipedia.org/wiki/"+item+"\">"+item+"</a></li>");
     })
     div += "</div>";
