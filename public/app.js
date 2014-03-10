@@ -22,13 +22,17 @@ $(document).ready(function(){
 App.Routers.Main = Backbone.Router.extend({
   
   routes: {
-    "" : "main"
+    "" : "main",
+    "*search": 'search'
   },
 
   main: function (event) {
-    console.log("main route activated");
     var view = new App.Views.Search();
     $("#container").html(view.render().el);
+  },
+
+  search: function(url) {
+    App.autocompleter.complete(url);
   }
 
 });
@@ -38,7 +42,7 @@ App.Views.Search = Backbone.View.extend({
 
   id: "search",
 
-  template: function(){ return "<input type='text' id='search_bar'></input></br><button id='clear'>Clear</button>"},
+  template: function(){ return "<h1 id='title'>Wikipedia Search Tool</h1><input type='text' id='search_bar'></input><button id='clear'>Clear</button>"},
 
   events: {
     'keyup #search_bar': 'search',

@@ -87,8 +87,8 @@ Trie.prototype.autoComplete = function(prefix){
   var node = this.find(prefix);
   if (!node) {return [];}
   var tester = node.getWords([],prefix);
-  console.log(node);
-  console.log(tester);
+  // console.log(node);
+  // console.log(tester);
   return node.getWords([],prefix);
 };
 
