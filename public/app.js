@@ -23,7 +23,7 @@ App.Routers.Main = Backbone.Router.extend({
   
   routes: {
     "" : "main",
-    "*search": 'search'
+    ":search": 'search'
   },
 
   main: function (event) {
@@ -31,8 +31,12 @@ App.Routers.Main = Backbone.Router.extend({
     $("#container").html(view.render().el);
   },
 
-  search: function(url) {
-    App.autocompleter.complete(url);
+  search: function(search) {
+    var view = new App.Views.Search();
+    $("#container").html(view.render().el);
+    setTimeout(function(){
+    view.search(search);
+  }, 500);
   }
 
 });
@@ -42,7 +46,7 @@ App.Views.Search = Backbone.View.extend({
 
   id: "search",
 
-  template: function(){ return "<h1 id='title'>Wikipedia Search Tool</h1><input type='text' id='search_bar'></input><button id='clear'>Clear</button>"},
+  template: function(){ return "<h1 id='title'>Wikipedia Search Tool</h1><input type='text' id='search_bar'></input><button id='clear'>Clear</button>";},
 
   events: {
     'keyup #search_bar': 'search',
@@ -59,8 +63,10 @@ App.Views.Search = Backbone.View.extend({
     $("#results").html("");
   },
 
-  search: function(){
-    var word = $("#search_bar").val();
+  search: function(to_search){
+    var word = $("#search_bar").val() || to_search;
+    if (word === "") {$("#results").html("");}
+    else {
     App.autocompleter.complete(word);
     var result = App.autocompleter.complete(word);
 
@@ -71,12 +77,13 @@ App.Views.Search = Backbone.View.extend({
     var div = "<div id='result'>";
     $.each(result, function(index, item) {
     div+=("<li><a href=\"http://en.wikipedia.org/wiki/"+item+"\">"+item+"</a></li>");
-    })
+    });
     div += "</div>";
     $("#results").html(div);
+    }
   },
 
-})
+});
 
 
 // App.Views.Results = Backbone.View.extend({
