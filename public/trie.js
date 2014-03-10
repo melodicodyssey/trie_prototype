@@ -42,8 +42,21 @@ Trie.prototype.getWords = function(words, currentWord) {
   // since a Trie doesn't know about its parents.
   words = words || [];
   currentWord = currentWord || "";
+
+  // function sortedInsert (array,element){
+  //   var lo = 0;
+  //   var hi = array.length;
+  //   while (lo < hi) {
+  //     var mid = (lo + hi) / 2;
+  //     if (array[mid] < element) {lo = mid + 1;}
+  //     else {hi = mid;}
+  //   }
+  //   array.splice(lo,0,element);
+  // }
+
   if (this.isWord) {
     words.push(currentWord);
+    // sortedInsert(words,currentWord);
   }
   for (var char in this.characters) {
     var newWord = currentWord + char;
@@ -66,7 +79,7 @@ tree.learn("skywalker");
 Trie.prototype.find = function(word, index){
   // This function will return the node in the trie
   // which corresponds to the end of the passed in word.
-  
+
   index = index || 0;
   var char = word[index];
 
@@ -86,10 +99,12 @@ Trie.prototype.autoComplete = function(prefix){
   prefix = prefix.toLowerCase();
   var node = this.find(prefix);
   if (!node) {return [];}
-  var tester = node.getWords([],prefix);
+  // var tester = node.getWords([],prefix);
   // console.log(node);
   // console.log(tester);
-  return node.getWords([],prefix);
+  var results = node.getWords([],prefix);
+  // return results.sort();
+  return results;
 };
 
 
